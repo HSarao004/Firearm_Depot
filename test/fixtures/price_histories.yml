@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  product: one
+  old_price: 9.99
+  new_price: 9.99
+  changed_at: 2024-07-08 16:56:59
+
+two:
+  product: two
+  old_price: 9.99
+  new_price: 9.99
+  changed_at: 2024-07-08 16:56:59
