@@ -70,3 +70,4 @@ end
 #Gem files to add active Admin
 gem 'devise'
 gem 'activeadmin'
+gem 'sassc-rails'

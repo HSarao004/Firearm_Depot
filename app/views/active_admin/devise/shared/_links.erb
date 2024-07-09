@@ -1,0 +1,11 @@
+<%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
+  <%= link_to t('active_admin.devise.links.forgot_your_password'), new_admin_user_password_path %>
+  <br>
+<% end -%>
+<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+  <%= link_to t('active_admin.devise.links.didnt_receive_confirmation_instructions'), new_admin_user_confirmation_path %>
+  <br>
+<% end -%>
+<%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+  <%= link_to t('active_admin.devise.links.didnt_receive_unlock_instructions'), new_admin_user_unlock_path %>
+<% end -%>
