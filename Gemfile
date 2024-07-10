@@ -71,3 +71,6 @@ end
 gem 'devise'
 gem 'activeadmin'
 gem 'sassc-rails'
+gem 'carrierwave', '~> 2.0'
+gem 'mini_magick', '~> 4.0'
+gem 'kaminari'

@@ -1,11 +1,11 @@
 class Product < ApplicationRecord
   belongs_to :category
-  has_many :order_items
-  has_many :price_histories
 
+  scope :newly_added, -> { where('created_at >= ?', 3.days.ago) }
+  scope :recently_updated, -> { where('updated_at >= ?', 3.days.ago) }
   # Define the associations that are searchable
   def self.ransackable_associations(auth_object = nil)
-    ["category", "order_items", "price_histories"]
+    ["category"]
   end
 
   # Define the attributes that are searchable

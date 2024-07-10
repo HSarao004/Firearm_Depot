@@ -1,4 +1,6 @@
 ActiveAdmin.register Accessory do
+  permit_params :name, :description, :price, :category_id
+
   index do
     selectable_column
     id_column

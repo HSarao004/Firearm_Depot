@@ -3,5 +3,11 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   resources :static_pages, only: [:show], param: :slug
-  root 'static_pages#show', slug: 'about'
+  root 'products#index'
+  resources :products, only: [:index, :show]
+  resources :categories, only: [:index, :show] do
+    member do
+      get :products
+    end
+  end
 end

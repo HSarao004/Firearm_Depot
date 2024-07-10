@@ -1,0 +1,33 @@
+<!-- app/views/categories/show.html.erb -->
+<h1><%= @category.name %> Products</h1>
+
+<div class="products">
+  <% @products.each do |product| %>
+    <div class="product">
+      <h2><%= link_to product.name, product_path(product) %></h2>
+      <%= image_tag product.front_img if product.front_img.present? %>
+      <p><%= product.description %></p>
+      <p>Price: <%= number_to_currency(product.price) %></p>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to 'Back to Products', products_path %>
+
+<style>
+  .products {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .product {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+    text-align: center;
+  }
+  .product img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
