@@ -7,22 +7,12 @@ ActiveAdmin.register Accessory do
     column :name
     column :description
     column :price
-    column "Category" do |accessory|
-      accessory.category.name if accessory.category.present?
-    end
+    column :category
     actions
   end
 
-  show do
-    attributes_table do
-      row :name
-      row :description
-      row :price
-      row "Category" do |accessory|
-        accessory.category.name if accessory.category.present?
-      end
-    end
-  end
+  filter :name
+  filter :category
 
   form do |f|
     f.inputs do

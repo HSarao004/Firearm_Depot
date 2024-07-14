@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>FirearmDepot</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>FirearmDepot</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  </head>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><%= link_to 'Home', root_path %></li>
+      <li><%= link_to 'Products', products_path %></li>
+      <li><%= link_to 'Accessories', accessories_path %></li>
+       <li><%= link_to 'About', static_page_path(slug: 'about') %></li>
+      <li><%= link_to 'Contact', static_page_path(slug: 'contact') %></li>
+      <li><%= link_to 'Admin', admin_root_path %></li>
+    </ul>
+  </nav>
 
-  <body>
-    <%= yield %>
-  </body>
+  <%= yield %>
+</body>
 </html>

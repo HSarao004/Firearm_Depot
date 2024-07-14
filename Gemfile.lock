@@ -351,6 +351,7 @@ DEPENDENCIES
   devise
   importmap-rails
   jbuilder
+  jquery-rails
   kaminari
   mini_magick (~> 4.0)
   pg (~> 1.1)

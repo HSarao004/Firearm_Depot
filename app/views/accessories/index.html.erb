@@ -1,0 +1,36 @@
+<h1>Accessories</h1>
+
+<%= search_form_for @q, url: accessories_path, method: :get do |f| %>
+  <div>
+    <%= f.label :name_cont, "Search by Name" %>
+    <%= f.search_field :name_cont %>
+  </div>
+  <div>
+    <%= f.label :category_id_eq, "Filter by Category" %>
+    <%= f.collection_select :category_id_eq, Category.all, :id, :name, include_blank: true %>
+  </div>
+  <div>
+    <%= f.submit "Search" %>
+  </div>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @accessories.each do |accessory| %>
+      <tr>
+        <td><%= link_to accessory.name, accessory_path(accessory) %></td>
+        <td><%= accessory.description %></td>
+        <td><%= accessory.price %></td>
+        <td><%= accessory.category.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

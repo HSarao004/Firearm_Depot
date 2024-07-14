@@ -66,11 +66,11 @@ group :test do
   gem "selenium-webdriver"
 end
 
-
-#Gem files to add active Admin
+# Gem files to add active Admin
 gem 'devise'
 gem 'activeadmin'
 gem 'sassc-rails'
 gem 'carrierwave', '~> 2.0'
 gem 'mini_magick', '~> 4.0'
 gem 'kaminari'
+gem 'jquery-rails'
