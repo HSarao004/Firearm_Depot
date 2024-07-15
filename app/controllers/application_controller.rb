@@ -12,4 +12,7 @@ class ApplicationController < ActionController::Base
     Rails.logger.info "AdminUser signed in: #{resource.email}"
     super
   end
+  def after_sign_in_path_for(resource)
+    products_path # or any other path
+  end
 end

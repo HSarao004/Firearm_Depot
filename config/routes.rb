@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     end
   end
   resources :accessories, only: [:index, :show]
+  resource :user_info, only: [:edit, :update]
 
   root 'home#index'
 end
