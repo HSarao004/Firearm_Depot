@@ -1,0 +1,12 @@
+=> 
+{[31m[1m"[0m[31mid[0m[31m[1m"[0m=>[34m[1m2[0m,
+ [31m[1m"[0m[31memail[0m[31m[1m"[0m=>[31m[1m"[0m[31mabc@eial.com[0m[31m[1m"[0m,
+ [31m[1m"[0m[31mpassword_digest[0m[31m[1m"[0m=>[36m[1mnil[0m,
+ [31m[1m"[0m[31mname[0m[31m[1m"[0m=>[36m[1mnil[0m,
+ [31m[1m"[0m[31mphone[0m[31m[1m"[0m=>[36m[1mnil[0m,
+ [31m[1m"[0m[31mcreated_at[0m[31m[1m"[0m=>Mon, 15 Jul 2024 13:34:48.798750000 UTC +00:00,
+ [31m[1m"[0m[31mupdated_at[0m[31m[1m"[0m=>Mon, 15 Jul 2024 13:34:48.798750000 UTC +00:00,
+ [31m[1m"[0m[31mencrypted_password[0m[31m[1m"[0m=>[31m[1m"[0m[31m$2a$12$OCi5SeEhcZxP8bMZAsUv/.ml0ENeQMUGTUKACCusRI3yKOh2sFBB.[0m[31m[1m"[0m,
+ [31m[1m"[0m[31mreset_password_token[0m[31m[1m"[0m=>[36m[1mnil[0m,
+ [31m[1m"[0m[31mreset_password_sent_at[0m[31m[1m"[0m=>[36m[1mnil[0m,
+ [31m[1m"[0m[31mremember_created_at[0m[31m[1m"[0m=>[36m[1mnil[0m}

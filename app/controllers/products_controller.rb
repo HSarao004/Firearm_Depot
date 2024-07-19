@@ -46,16 +46,24 @@ class ProductsController < ApplicationController
   end
 
   def add_to_cart
-    cart_item = current_user.carts.find_or_initialize_by(cartable: @product)
-    cart_item.quantity ||= 0
-    cart_item.quantity += params[:quantity].to_i
-    if cart_item.save
-      flash[:notice] = 'Product added to cart'
+    # Use params[:id] to find the product
+    product = Product.find(params[:id])
+
+    # Ensure the user has a cart
+    cart = current_user.cart || current_user.create_cart
+
+    # Find or create a cart item
+    cart_item = cart.cart_items.find_by(product: product)
+    if cart_item
+      cart_item.increment!(:quantity)
     else
-      flash[:alert] = 'Failed to add product to cart'
+      cart.cart_items.create(product: product, quantity: params[:quantity] || 1)
     end
-    redirect_to product_path(@product)
+
+    redirect_to products_path, notice: 'Product added to cart.'
   end
+
+
 
   private
 

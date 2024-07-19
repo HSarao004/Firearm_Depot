@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   has_many :orders
   has_one :user_info, dependent: :destroy
-  has_many :carts
+  has_one :cart, dependent: :destroy
   accepts_nested_attributes_for :user_info
 
   validates :email, presence: true, uniqueness: true
