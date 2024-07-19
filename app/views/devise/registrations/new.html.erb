@@ -1,15 +1,20 @@
 <h2>Sign up</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<%= form_for(resource, as: resource_name, url: user_registration_path(resource_name), html: { multipart: true }) do |f| %>
   <%= devise_error_messages! %>
 
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+    <%= f.label :name %><br />
+    <%= f.text_field :name, autofocus: true %>
   </div>
 
   <div class="field">
-    <%= f.label :password %> <i>(6 characters minimum)</i><br />
+    <%= f.label :email %><br />
+    <%= f.email_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %> <em>(6 characters minimum)</em><br />
     <%= f.password_field :password, autocomplete: "off" %>
   </div>
 
@@ -17,50 +22,6 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
-
-  <h3>User Information</h3>
-
-  <%= f.fields_for :user_info do |u| %>
-    <div class="field">
-      <%= u.label :street %><br />
-      <%= u.text_field :street %>
-    </div>
-
-    <div class="field">
-      <%= u.label :city %><br />
-      <%= u.text_field :city %>
-    </div>
-
-    <div class="field">
-      <%= u.label :province %><br />
-      <%= u.select :province, options_for_select([
-        ['AB', 'AB'], ['BC', 'BC'], ['MB', 'MB'], ['NB', 'NB'], 
-        ['NL', 'NL'], ['NT', 'NT'], ['NS', 'NS'], ['NU', 'NU'], 
-        ['ON', 'ON'], ['PE', 'PE'], ['QC', 'QC'], ['SK', 'SK'], 
-        ['YT', 'YT']
-      ]) %>
-    </div>
-
-    <div class="field">
-      <%= u.label :postal_code %><br />
-      <%= u.text_field :postal_code %>
-    </div>
-
-    <div class="field">
-      <%= u.label :card_number %><br />
-      <%= u.text_field :card_number %>
-    </div>
-
-    <div class="field">
-      <%= u.label :expiry %><br />
-      <%= u.text_field :expiry %>
-    </div>
-
-    <div class="field">
-      <%= u.label :cvv %><br />
-      <%= u.text_field :cvv %>
-    </div>
-  <% end %>
 
   <div class="actions">
     <%= f.submit "Sign up" %>

@@ -23,6 +23,10 @@ Rails.application.routes.draw do
   end
   resources :accessories, only: [:index, :show]
   resource :user_info, only: [:edit, :update]
+  resource :cart, only: [:show] do
+    patch 'update_quantity', on: :collection
+    delete 'remove_item', on: :collection
+  end
 
   root 'home#index'
 end

@@ -1,0 +1,44 @@
+<!-- app/views/carts/show.html.erb -->
+<h1>Your Shopping Cart</h1>
+<% if @cart_items.empty? %>
+  <p>Your cart is empty.</p>
+<% else %>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cart_items.each do |cart_item| %>
+        <% item = cart_item.cartable %>
+        <% if item %>
+          <tr>
+            <td><%= item.name %></td>
+            <td>
+              <%= form_with url: update_quantity_cart_path(cart_item), method: :patch, local: true do |form| %>
+                <%= form.number_field :quantity, value: cart_item.quantity, min: 1 %>
+                <%= form.submit 'Update' %>
+              <% end %>
+            </td>
+            <td><%= number_to_currency(item.price) %></td>
+            <td><%= number_to_currency(item.price * cart_item.quantity) %></td>
+            <td>
+              <%= form_with url: remove_item_cart_path(cart_item), method: :delete, local: true do |form| %>
+                <%= form.submit 'Remove' %>
+              <% end %>
+            </td>
+          </tr>
+        <% else %>
+          <tr>
+            <td colspan="5">Item not found</td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

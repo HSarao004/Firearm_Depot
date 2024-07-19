@@ -1,5 +1,7 @@
 class Accessory < ApplicationRecord
   belongs_to :category
+  has_many :carts, as: :cartable
+
 
   validates :name, presence: true
   validates :price, presence: true

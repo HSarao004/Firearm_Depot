@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :add_to_cart]
 
   def index
     @products = if params[:filter] == 'new'
@@ -12,7 +12,6 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find(params[:id])
   end
 
   def new
@@ -44,6 +43,18 @@ class ProductsController < ApplicationController
   def destroy
     @product.destroy
     redirect_to products_url, notice: 'Product was successfully destroyed.'
+  end
+
+  def add_to_cart
+    cart_item = current_user.carts.find_or_initialize_by(cartable: @product)
+    cart_item.quantity ||= 0
+    cart_item.quantity += params[:quantity].to_i
+    if cart_item.save
+      flash[:notice] = 'Product added to cart'
+    else
+      flash[:alert] = 'Failed to add product to cart'
+    end
+    redirect_to product_path(@product)
   end
 
   private

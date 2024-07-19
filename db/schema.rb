@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_14_172119) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_15_211033) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -85,6 +85,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_14_172119) do
     t.decimal "total_after_tax"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "cartable_type"
+    t.bigint "cartable_id"
+    t.index ["cartable_type", "cartable_id"], name: "index_carts_on_cartable"
     t.index ["product_id"], name: "index_carts_on_product_id"
     t.index ["user_id"], name: "index_carts_on_user_id"
   end

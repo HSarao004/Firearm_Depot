@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
   belongs_to :category
+  has_many :carts, as: :cartable
 
   scope :newly_added, -> { where('created_at >= ?', 3.days.ago) }
   scope :recently_updated, -> { where('updated_at >= ?', 3.days.ago) }
