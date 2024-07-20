@@ -46,24 +46,12 @@ class ProductsController < ApplicationController
   end
 
   def add_to_cart
-    # Use params[:id] to find the product
     product = Product.find(params[:id])
-
-    # Ensure the user has a cart
-    cart = current_user.cart || current_user.create_cart
-
-    # Find or create a cart item
-    cart_item = cart.cart_items.find_by(product: product)
-    if cart_item
-      cart_item.increment!(:quantity)
-    else
-      cart.cart_items.create(product: product, quantity: params[:quantity] || 1)
-    end
-
-    redirect_to products_path, notice: 'Product added to cart.'
+    cart = session[:cart] || {}
+    cart[product.id.to_s] = (cart[product.id.to_s] || 0) + 1
+    session[:cart] = cart
+    redirect_to cart_path, notice: 'Product added to cart.'
   end
-
-
 
   private
 

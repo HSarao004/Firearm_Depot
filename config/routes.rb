@@ -28,13 +28,15 @@ Rails.application.routes.draw do
   resources :accessories, only: [:index, :show]
 
   resource :cart, only: [:show] do
-    patch :update_quantity, to: 'carts#update'
-    delete :remove_item, to: 'carts#remove'
+    patch :update_quantity, to: 'carts#update_quantity'
+    delete :remove_item, to: 'carts#remove_item'
     get :checkout, to: 'carts#checkout'
     post :complete_order, to: 'carts#complete_order'
   end
 
   resource :user_info, only: [:edit, :update]
+
+  resources :orders, only: [:index, :show]
 
   root 'home#index'
 end

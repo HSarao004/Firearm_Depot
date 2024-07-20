@@ -1,16 +1,13 @@
 <h1>Your Shopping Cart</h1>
 
-<% if @cart.empty? %>
-  <p>Your cart is empty.</p>
-<% else %>
+<% if @cart.any? %>
   <table>
     <thead>
       <tr>
         <th>Product</th>
         <th>Quantity</th>
         <th>Price</th>
-        <th>Total</th>
-        <th>Actions</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -25,11 +22,9 @@
               <%= submit_tag 'Update' %>
             <% end %>
           </td>
-          <td><%= number_to_currency(product.price) %></td>
           <td><%= number_to_currency(product.price * quantity) %></td>
           <td>
             <%= form_with url: remove_item_cart_path(product_id: product.id), method: :delete, local: true do %>
-              <%= hidden_field_tag :product_id, product.id %>
               <%= submit_tag 'Remove' %>
             <% end %>
           </td>
@@ -37,8 +32,7 @@
       <% end %>
     </tbody>
   </table>
-
-  <h2>Total: <%= number_to_currency(@cart.sum { |product_id, quantity| Product.find(product_id).price * quantity }) %></h2>
-
-  <%= button_to 'Continue to Checkout', checkout_cart_path, method: :get %>
+  <%= link_to 'Checkout', checkout_cart_path, class: 'btn btn-primary' %>
+<% else %>
+  <p>Your cart is empty.</p>
 <% end %>

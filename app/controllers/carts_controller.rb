@@ -11,7 +11,7 @@ class CartsController < ApplicationController
     redirect_to cart_path, notice: 'Product added to cart.'
   end
 
-  def update
+  def update_quantity
     product_id = params[:product_id]
     quantity = params[:quantity].to_i
     if quantity > 0
@@ -23,7 +23,7 @@ class CartsController < ApplicationController
     redirect_to cart_path, notice: 'Cart updated.'
   end
 
-  def remove
+  def remove_item
     @cart.delete(params[:product_id])
     save_cart
     redirect_to cart_path, notice: 'Product removed from cart.'
@@ -51,7 +51,7 @@ class CartsController < ApplicationController
     end
 
     session[:cart] = {}
-    redirect_to order_path(order), notice: 'Order completed successfully!'
+    redirect_to orders_path, notice: 'Order completed successfully!'
   rescue ActiveRecord::RecordInvalid
     @provinces = Tax.pluck(:region)
     render :checkout

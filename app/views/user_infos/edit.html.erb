@@ -1,6 +1,6 @@
 <h2>Edit User Information</h2>
 
-<%= form_for @user_info, url: user_info_path, method: :put do |f| %>
+<%= form_for(@user_info, url: user_info_path, method: :put) do |f| %>
   <% if @user_info.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@user_info.errors.count, "error") %> prohibited this user_info from being saved:</h2>

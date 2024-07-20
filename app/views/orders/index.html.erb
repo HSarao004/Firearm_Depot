@@ -1,0 +1,19 @@
+<h1>My Orders</h1>
+
+<% @orders.each do |order| %>
+  <div class="order">
+    <h2>Order ##<%= order.id %> - <%= order.created_at.strftime('%Y-%m-%d') %></h2>
+    <ul>
+      <% order.order_items.each do |item| %>
+        <li>
+          <%= item.product.name %> - <%= item.quantity %> x <%= number_to_currency(item.product.price) %> = <%= number_to_currency(item.product.price * item.quantity) %>
+        </li>
+      <% end %>
+    </ul>
+    <p><strong>Subtotal:</strong> <%= number_to_currency(order.total_price) %></p>
+    <p><strong>GST:</strong> <%= number_to_currency(order.gst) %></p>
+    <p><strong>PST:</strong> <%= number_to_currency(order.pst) %></p>
+    <p><strong>HST:</strong> <%= number_to_currency(order.hst) %></p>
+    <p><strong>Total:</strong> <%= number_to_currency(order.total_with_tax) %></p>
+  </div>
+<% end %>

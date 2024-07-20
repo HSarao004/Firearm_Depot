@@ -3,14 +3,12 @@ class UserInfosController < ApplicationController
   before_action :set_user_info
 
   def edit
-    @provinces = Tax.pluck(:region)
   end
 
   def update
     if @user_info.update(user_info_params)
-      redirect_to root_path, notice: 'User info updated successfully.'
+      redirect_to edit_user_info_path, notice: 'User info updated successfully.'
     else
-      @provinces = Tax.pluck(:region)
       render :edit
     end
   end
