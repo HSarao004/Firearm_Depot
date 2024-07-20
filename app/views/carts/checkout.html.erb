@@ -1,27 +1,16 @@
+<!-- app/views/carts/checkout.html.erb -->
 <h1>Checkout</h1>
-
-<%= form_with url: complete_order_cart_path, method: :post, local: true do |f| %>
+<%= form_with model: Order.new, url: orders_path, method: :post, local: true do |f| %>
   <h2>Customer Information</h2>
-  <% if @user_info.new_record? %>
-    <div class="field">
-      <%= f.label :street %><br>
-      <%= f.text_field :street, name: 'user_info[street]' %>
-    </div>
-    <div class="field">
-      <%= f.label :city %><br>
-      <%= f.text_field :city, name: 'user_info[city]' %>
-    </div>
-    <div class="field">
-      <%= f.label :province %><br>
-      <%= f.select :province, @provinces.map { |province| [province, province] }, prompt: 'Select Province', name: 'user_info[province]' %>
-    </div>
-    <div class="field">
-      <%= f.label :postal_code %><br>
-      <%= f.text_field :postal_code, name: 'user_info[postal_code]' %>
-    </div>
-  <% else %>
-    <p><strong>Address:</strong> <%= @user_info.street %>, <%= @user_info.city %>, <%= @user_info.province %>, <%= @user_info.postal_code %></p>
-  <% end %>
+  <%= hidden_field_tag 'order[user_info][street]', @user_info.street %>
+  <%= hidden_field_tag 'order[user_info][city]', @user_info.city %>
+  <%= hidden_field_tag 'order[user_info][province]', @user_info.province %>
+  <%= hidden_field_tag 'order[user_info][postal_code]', @user_info.postal_code %>
+
+  <p><strong>Street:</strong> <%= @user_info.street %></p>
+  <p><strong>City:</strong> <%= @user_info.city %></p>
+  <p><strong>Province:</strong> <%= @user_info.province %></p>
+  <p><strong>Postal Code:</strong> <%= @user_info.postal_code %></p>
 
   <h2>Order Summary</h2>
   <ul>

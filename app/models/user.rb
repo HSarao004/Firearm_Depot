@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :trackable
 
-  has_many :orders
+  has_many :orders,dependent: :destroy
   has_one :user_info, dependent: :destroy
   has_one :cart, dependent: :destroy
   accepts_nested_attributes_for :user_info

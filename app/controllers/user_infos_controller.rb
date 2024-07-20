@@ -1,13 +1,13 @@
 class UserInfosController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_user_info
+  before_action :set_provinces, only: [:edit, :update]
 
   def edit
   end
 
   def update
     if @user_info.update(user_info_params)
-      redirect_to edit_user_info_path, notice: 'User info updated successfully.'
+      redirect_to root_path, notice: 'User information updated successfully.'
     else
       render :edit
     end
@@ -16,10 +16,14 @@ class UserInfosController < ApplicationController
   private
 
   def set_user_info
-    @user_info = current_user.user_info || current_user.build_user_info
+    @user_info = current_user.user_info
+  end
+
+  def set_provinces
+    @provinces = Tax.pluck(:region)
   end
 
   def user_info_params
-    params.require(:user_info).permit(:street, :city, :province, :postal_code, :card_number, :expiry, :cvv)
+    params.require(:user_info).permit(:street, :city, :province, :postal_code)
   end
 end

@@ -31,12 +31,12 @@ Rails.application.routes.draw do
     patch :update_quantity, to: 'carts#update_quantity'
     delete :remove_item, to: 'carts#remove_item'
     get :checkout, to: 'carts#checkout'
-    post :complete_order, to: 'carts#complete_order'
+    post :complete_order, to: 'orders#create'
   end
 
-  resource :user_info, only: [:edit, :update]
+  resources :orders, only: [:index, :create]
 
-  resources :orders, only: [:index, :show]
+  resource :user_info, only: [:edit, :update]
 
   root 'home#index'
 end
