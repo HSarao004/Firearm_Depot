@@ -1,0 +1,56 @@
+<h1>Checkout</h1>
+
+<%= form_with url: complete_order_cart_path, method: :post, local: true do |f| %>
+  <h2>Customer Information</h2>
+  <% if @user_info.new_record? %>
+    <div class="field">
+      <%= f.label :street %><br>
+      <%= f.text_field :street, name: 'user_info[street]' %>
+    </div>
+    <div class="field">
+      <%= f.label :city %><br>
+      <%= f.text_field :city, name: 'user_info[city]' %>
+    </div>
+    <div class="field">
+      <%= f.label :province %><br>
+      <%= f.select :province, @provinces.map { |province| [province, province] }, prompt: 'Select Province', name: 'user_info[province]' %>
+    </div>
+    <div class="field">
+      <%= f.label :postal_code %><br>
+      <%= f.text_field :postal_code, name: 'user_info[postal_code]' %>
+    </div>
+  <% else %>
+    <p><strong>Address:</strong> <%= @user_info.street %>, <%= @user_info.city %>, <%= @user_info.province %>, <%= @user_info.postal_code %></p>
+  <% end %>
+
+  <h2>Order Summary</h2>
+  <ul>
+    <% @cart.each do |product_id, quantity| %>
+      <% product = Product.find(product_id) %>
+      <li><%= product.name %> - <%= quantity %> x <%= number_to_currency(product.price) %> = <%= number_to_currency(product.price * quantity) %></li>
+    <% end %>
+  </ul>
+
+  <h3>Subtotal: <%= number_to_currency(@cart.sum { |product_id, quantity| Product.find(product_id).price * quantity }) %></h3>
+
+  <% if @user_info.province %>
+    <% total_price = @cart.sum { |product_id, quantity| Product.find(product_id).price * quantity } %>
+    <% tax = Tax.find_by(region: @user_info.province) %>
+    <% gst = total_price * (tax.gst_rate / 100) %>
+    <% pst = total_price * (tax.pst_rate / 100) %>
+    <% hst = total_price * (tax.hst_rate / 100) %>
+    
+    <h3>Taxes:</h3>
+    <ul>
+      <li>GST (<%= tax.gst_rate %>%): <%= number_to_currency(gst) %></li>
+      <li>PST (<%= tax.pst_rate %>%): <%= number_to_currency(pst) %></li>
+      <li>HST (<%= tax.hst_rate %>%): <%= number_to_currency(hst) %></li>
+    </ul>
+
+    <h3>Total: <%= number_to_currency(total_price + gst + pst + hst) %></h3>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit "Complete Order" %>
+  </div>
+<% end %>

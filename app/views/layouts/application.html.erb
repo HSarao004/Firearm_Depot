@@ -17,7 +17,7 @@
       <li><%= link_to 'Contact', static_page_path(slug: 'contact') %></li>
       <li><%= link_to 'Cart', cart_path %></li>
       <% if user_signed_in? %>
-        <li><%= link_to 'Edit User Info', edit_user_registration_path %></li>
+        <li><%= link_to 'Edit User Info', edit_user_info_path %></li>
         <li><%= link_to 'Admin', admin_root_path %></li>
         <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
       <% else %>

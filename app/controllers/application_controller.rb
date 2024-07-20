@@ -7,6 +7,9 @@ class ApplicationController < ActionController::Base
   def admin_namespace?
     request.fullpath.start_with?('/admin')
   end
+  def initialize_cart
+    session[:cart] ||= {}
+  end
 
   def after_sign_in_path_for(resource)
     Rails.logger.info "AdminUser signed in: #{resource.email}"

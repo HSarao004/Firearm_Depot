@@ -8,39 +8,33 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    # This route handles user sign-out
     get 'users/sign_out', to: 'devise/sessions#destroy'
   end
 
-  # Static pages
   resources :static_pages, only: [:show], param: :slug
 
-  # Products routes with custom action to add products to the cart
   resources :products, only: [:index, :show] do
     member do
-      post :add_to_cart
+      post :add_to_cart, to: 'carts#add'
     end
   end
 
-  # Categories routes with a custom action to list products by category
   resources :categories, only: [:index, :show] do
     member do
       get :products
     end
   end
 
-  # Accessories routes
   resources :accessories, only: [:index, :show]
 
-  # User info route for editing and updating user details
-  resource :user_info, only: [:edit, :update]
-
-  # Cart routes for showing the cart, updating item quantities, and removing items
   resource :cart, only: [:show] do
-    patch :update_quantity
-    delete :remove_item,param: :id
+    patch :update_quantity, to: 'carts#update'
+    delete :remove_item, to: 'carts#remove'
+    get :checkout, to: 'carts#checkout'
+    post :complete_order, to: 'carts#complete_order'
   end
 
-  # Root route
+  resource :user_info, only: [:edit, :update]
+
   root 'home#index'
 end
