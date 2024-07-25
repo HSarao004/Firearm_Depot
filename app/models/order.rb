@@ -1,7 +1,7 @@
 class Order < ApplicationRecord
   # Associations
   belongs_to :user
-  has_many :order_items
+  has_many :order_items,dependent: :destroy
   has_many :products, through: :order_items
 
   # Other model code...
@@ -12,5 +12,8 @@ class Order < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     ["status", "total_price", "gst", "pst", "hst", "total_with_tax", "created_at"]
+  end
+  def total_with_tax
+    total_price + gst + pst + hst
   end
 end

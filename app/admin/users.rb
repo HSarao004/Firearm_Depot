@@ -1,3 +1,5 @@
+# app/admin/users.rb
+
 ActiveAdmin.register User do
   index do
     selectable_column
@@ -9,33 +11,40 @@ ActiveAdmin.register User do
 
   show do
     attributes_table do
-      row :id
       row :email
       row :created_at
     end
 
     panel "Orders" do
       table_for user.orders do
-        column :id
-        column :total_price
-        column :gst
-        column :pst
-        column :hst
-        column :total_with_tax
-        column :created_at
+        column "Order ID", :id
+        column "Order Date", :created_at
+        column "Total Price (Before Tax)", :total_price do |order|
+          number_to_currency(order.total_price)
+        end
+        column "GST", :gst do |order|
+          number_to_currency(order.gst)
+        end
+        column "PST", :pst do |order|
+          number_to_currency(order.pst)
+        end
+        column "HST", :hst do |order|
+          number_to_currency(order.hst)
+        end
+        column "Total Price (With Tax)", :total_with_tax do |order|
+          number_to_currency(order.total_with_tax)
+        end
         column "Order Items" do |order|
-          table_for order.order_items do
-            column :product
-            column :quantity
-            column :price_per_item do |item|
-              number_to_currency(item.product.price)
-            end
-            column :total_price do |item|
-              number_to_currency(item.product.price * item.quantity)
+          ul do
+            order.order_items.each do |item|
+              li "#{item.product.name} - Quantity: #{item.quantity} - Price: #{number_to_currency(item.product.price)}"
             end
           end
         end
       end
     end
   end
+
+  filter :email
+  filter :created_at
 end
