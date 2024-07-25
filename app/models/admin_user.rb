@@ -1,6 +1,7 @@
-# app/models/admin_user.rb
 class AdminUser < ApplicationRecord
-  devise :database_authenticatable, :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :trackable
 
-  validates :email, presence: true, uniqueness: true
+  def is_admin?
+    true
+  end
 end

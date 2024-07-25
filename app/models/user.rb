@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy
   accepts_nested_attributes_for :user_info
 
-  validates :email, presence: true, uniqueness: true
-  validates :password, presence: true
+  def is_admin?
+    admin
+  end
+
 end

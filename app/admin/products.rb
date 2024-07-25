@@ -40,8 +40,15 @@ ActiveAdmin.register Product do
         "No image"
       end
     end
+    column :category
     actions
   end
+
+  filter :name
+  filter :description
+  filter :price
+  filter :quantity_available
+  filter :category, as: :select, collection: -> { Category.all.collect { |c| [c.name, c.id] } }
 
   show do
     attributes_table do
@@ -77,6 +84,7 @@ ActiveAdmin.register Product do
           "No image"
         end
       end
+      row :category
     end
   end
 
