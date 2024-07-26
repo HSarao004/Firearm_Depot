@@ -37,22 +37,25 @@ class CartsController < ApplicationController
   def complete_order
     logger.debug "Params: #{params.inspect}"
 
-    if params[:user_info].present?
-      @user_info = current_user.user_info || current_user.build_user_info(user_info_params)
-      @user_info.update!(user_info_params)
-    else
-      @user_info = current_user.user_info
+    ActiveRecord::Base.transaction do
+      if params[:order][:user_info].present?
+        @user_info = current_user.user_info || current_user.build_user_info(user_info_params)
+        @user_info.update!(user_info_params)
+      else
+        @user_info = current_user.user_info
+      end
+
+      order = current_user.orders.create!(order_params.merge(tax_id: Tax.find_by(region: @user_info.province).id))
+
+      session[:cart].each do |product_id, quantity|
+        order.order_items.create!(product_id: product_id, quantity: quantity)
+      end
+
+      session[:cart] = {}
     end
-
-    order = current_user.orders.create!(order_params)
-
-    session[:cart].each do |product_id, quantity|
-      order.order_items.create!(product_id: product_id, quantity: quantity)
-    end
-
-    session[:cart] = {}
     redirect_to orders_path, notice: 'Order completed successfully!'
-  rescue ActiveRecord::RecordInvalid
+  rescue ActiveRecord::RecordInvalid => e
+    logger.debug "Order creation failed: #{e.message}"
     @provinces = Tax.pluck(:region)
     render :checkout
   rescue ActionController::ParameterMissing => e
@@ -71,7 +74,7 @@ class CartsController < ApplicationController
   end
 
   def user_info_params
-    params.require(:user_info).permit(:street, :city, :province, :postal_code)
+    params.require(:order).require(:user_info).permit(:street, :city, :province, :postal_code)
   end
 
   def order_params
@@ -87,7 +90,8 @@ class CartsController < ApplicationController
       gst: gst,
       pst: pst,
       hst: hst,
-      total_with_tax: total_price + gst + pst + hst
+      total_with_tax: total_price + gst + pst + hst,
+      tax_id: tax.id
     }
   end
 end

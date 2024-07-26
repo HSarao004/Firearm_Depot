@@ -1,5 +1,5 @@
 class UserInfosController < ApplicationController
-  before_action :set_user_info
+  before_action :set_user_info, only: [:edit, :update]
   before_action :set_provinces, only: [:edit, :update]
 
   def edit

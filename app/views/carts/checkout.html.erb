@@ -1,16 +1,36 @@
-<!-- app/views/carts/checkout.html.erb -->
 <h1>Checkout</h1>
-<%= form_with model: Order.new, url: orders_path, method: :post, local: true do |f| %>
-  <h2>Customer Information</h2>
-  <%= hidden_field_tag 'order[user_info][street]', @user_info.street %>
-  <%= hidden_field_tag 'order[user_info][city]', @user_info.city %>
-  <%= hidden_field_tag 'order[user_info][province]', @user_info.province %>
-  <%= hidden_field_tag 'order[user_info][postal_code]', @user_info.postal_code %>
 
-  <p><strong>Street:</strong> <%= @user_info.street %></p>
-  <p><strong>City:</strong> <%= @user_info.city %></p>
-  <p><strong>Province:</strong> <%= @user_info.province %></p>
-  <p><strong>Postal Code:</strong> <%= @user_info.postal_code %></p>
+<%= form_with model: Order.new, url: complete_order_cart_path, method: :post, local: true do |f| %>
+  <h2>Customer Information</h2>
+  
+  <% if @user_info.persisted? %>
+    <%= hidden_field_tag 'order[user_info][street]', @user_info.street %>
+    <%= hidden_field_tag 'order[user_info][city]', @user_info.city %>
+    <%= hidden_field_tag 'order[user_info][province]', @user_info.province %>
+    <%= hidden_field_tag 'order[user_info][postal_code]', @user_info.postal_code %>
+
+    <p><strong>Street:</strong> <%= @user_info.street %></p>
+    <p><strong>City:</strong> <%= @user_info.city %></p>
+    <p><strong>Province:</strong> <%= @user_info.province %></p>
+    <p><strong>Postal Code:</strong> <%= @user_info.postal_code %></p>
+  <% else %>
+    <div class="field">
+      <%= label_tag 'order[user_info][street]', 'Street' %>
+      <%= text_field_tag 'order[user_info][street]', params.dig(:order, :user_info, :street) %>
+    </div>
+    <div class="field">
+      <%= label_tag 'order[user_info][city]', 'City' %>
+      <%= text_field_tag 'order[user_info][city]', params.dig(:order, :user_info, :city) %>
+    </div>
+    <div class="field">
+      <%= label_tag 'order[user_info][province]', 'Province' %>
+      <%= select_tag 'order[user_info][province]', options_for_select(@provinces, params.dig(:order, :user_info, :province)) %>
+    </div>
+    <div class="field">
+      <%= label_tag 'order[user_info][postal_code]', 'Postal Code' %>
+      <%= text_field_tag 'order[user_info][postal_code]', params.dig(:order, :user_info, :postal_code) %>
+    </div>
+  <% end %>
 
   <h2>Order Summary</h2>
   <ul>
@@ -22,13 +42,14 @@
 
   <h3>Subtotal: <%= number_to_currency(@cart.sum { |product_id, quantity| Product.find(product_id).price * quantity }) %></h3>
 
-  <% if @user_info.province %>
+  <% if @user_info.province.present? || params.dig(:order, :user_info, :province).present? %>
     <% total_price = @cart.sum { |product_id, quantity| Product.find(product_id).price * quantity } %>
-    <% tax = Tax.find_by(region: @user_info.province) %>
+    <% province = @user_info.province.presence || params.dig(:order, :user_info, :province) %>
+    <% tax = Tax.find_by(region: province) %>
     <% gst = total_price * (tax.gst_rate / 100) %>
     <% pst = total_price * (tax.pst_rate / 100) %>
     <% hst = total_price * (tax.hst_rate / 100) %>
-    
+
     <h3>Taxes:</h3>
     <ul>
       <li>GST (<%= tax.gst_rate %>%): <%= number_to_currency(gst) %></li>
