@@ -45,15 +45,24 @@ class CartsController < ApplicationController
         @user_info = current_user.user_info
       end
 
-      order = current_user.orders.create!(order_params.merge(tax_id: Tax.find_by(region: @user_info.province).id))
+      @order = current_user.orders.create!(order_params.merge(tax_id: Tax.find_by(region: @user_info.province).id))
 
       session[:cart].each do |product_id, quantity|
-        order.order_items.create!(product_id: product_id, quantity: quantity)
+        @order.order_items.create!(product_id: product_id, quantity: quantity)
+      end
+
+      if params[:stripeToken].present?
+        Rails.logger.info "Stripe token received: #{params[:stripeToken]}"
+        @order.update!(status: 'paid', stripe_payment_id: params[:stripeToken])
+        Rails.logger.info "Order status set to 'paid' for order ID: #{@order.id} with status #{@order.status}"
+      else
+        Rails.logger.info "Stripe token not received"
+        raise ActiveRecord::Rollback, 'Payment failed'
       end
 
       session[:cart] = {}
+      redirect_to orders_path, notice: 'Order completed successfully!'
     end
-    redirect_to orders_path, notice: 'Order completed successfully!'
   rescue ActiveRecord::RecordInvalid => e
     logger.debug "Order creation failed: #{e.message}"
     @provinces = Tax.pluck(:region)

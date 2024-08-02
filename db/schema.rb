@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_24_234944) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_02_170444) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -147,6 +147,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_24_234944) do
     t.decimal "pst", precision: 10, scale: 2
     t.decimal "hst", precision: 10, scale: 2
     t.decimal "total_with_tax", precision: 10, scale: 2
+    t.string "stripe_payment_id"
     t.index ["tax_id"], name: "index_orders_on_tax_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end

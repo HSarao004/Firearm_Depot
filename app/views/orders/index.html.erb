@@ -1,15 +1,22 @@
+<!-- app/views/orders/index.html.erb -->
 <h1>My Orders</h1>
 
 <% if @orders.any? %>
   <% @orders.each do |order| %>
     <div class="order">
-      
       <p><strong>Order Date:</strong> <%= order.created_at.strftime("%B %d, %Y") %></p>
       <p><strong>Total Price (Before Tax):</strong> <%= number_to_currency(order.total_price) %></p>
       <p><strong>GST:</strong> <%= number_to_currency(order.gst) %></p>
       <p><strong>PST:</strong> <%= number_to_currency(order.pst) %></p>
       <p><strong>HST:</strong> <%= number_to_currency(order.hst) %></p>
       <p><strong>Total Price (With Tax):</strong> <%= number_to_currency(order.total_with_tax) %></p>
+
+      <% if order.status == 'paid' %>
+        <p><strong>Payment Status:</strong> Paid</p>
+      <% else %>
+        <p><strong>Payment Status:</strong> Not Paid</p>
+      <% end %>
+
       <h3>Order Items</h3>
       <ul>
         <% order.order_items.each do |item| %>
