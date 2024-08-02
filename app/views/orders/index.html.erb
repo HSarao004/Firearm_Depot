@@ -1,4 +1,3 @@
-<!-- app/views/orders/index.html.erb -->
 <h1>My Orders</h1>
 
 <% if @orders.any? %>
@@ -10,17 +9,11 @@
       <p><strong>PST:</strong> <%= number_to_currency(order.pst) %></p>
       <p><strong>HST:</strong> <%= number_to_currency(order.hst) %></p>
       <p><strong>Total Price (With Tax):</strong> <%= number_to_currency(order.total_with_tax) %></p>
-
-      <% if order.status == 'paid' %>
-        <p><strong>Payment Status:</strong> Paid</p>
-      <% else %>
-        <p><strong>Payment Status:</strong> Not Paid</p>
-      <% end %>
-
+      <p><strong>Payment Status:</strong> <%= order.status == 'paid' ? 'Paid' : 'Not Paid' %></p>
       <h3>Order Items</h3>
       <ul>
         <% order.order_items.each do |item| %>
-          <li><%= item.product.name %> - Quantity: <%= item.quantity %> - Price: <%= number_to_currency(item.product.price) %></li>
+          <li><%= item.product.name %> - Quantity: <%= item.quantity %> - Price: <%= number_to_currency(item.price) %></li>
         <% end %>
       </ul>
     </div>

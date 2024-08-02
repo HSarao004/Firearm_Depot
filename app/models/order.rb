@@ -1,16 +1,14 @@
 class Order < ApplicationRecord
-  # Associations
   belongs_to :user
+  belongs_to :tax
   has_many :order_items, dependent: :destroy
   has_many :products, through: :order_items
 
-  # Validations
   validates :user, presence: true
-  validates :total_price, presence: true
-  validates :gst, :pst, :hst, presence: true
+  validates :total_price, :gst, :pst, :hst, presence: true
   validates :stripe_payment_id, presence: true, if: :paid?
 
-  # Methods for ransack gem
+  # Ransack attributes for search functionality
   def self.ransackable_associations(auth_object = nil)
     ["user", "order_items", "products"]
   end

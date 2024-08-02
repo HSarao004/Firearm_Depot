@@ -1,5 +1,3 @@
-# app/admin/users.rb
-
 ActiveAdmin.register User do
   index do
     selectable_column
@@ -37,7 +35,7 @@ ActiveAdmin.register User do
         column "Order Items" do |order|
           ul do
             order.order_items.each do |item|
-              li "#{item.product.name} - Quantity: #{item.quantity} - Price: #{number_to_currency(item.product.price)}"
+              li "#{item.product.name} - Quantity: #{item.quantity} - Price: #{number_to_currency(item.price_at_purchase)}"
             end
           end
         end
