@@ -1,0 +1,24 @@
+<h1>My Orders</h1>
+
+<% if @orders.any? %>
+  <% @orders.each do |order| %>
+    <div class="order">
+      <p><strong>Order Date:</strong> <%= order.created_at.strftime("%B %d, %Y") %></p>
+      <p><strong>Total Price (Before Tax):</strong> <%= number_to_currency(order.total_price) %></p>
+      <p><strong>GST:</strong> <%= number_to_currency(order.gst) %></p>
+      <p><strong>PST:</strong> <%= number_to_currency(order.pst) %></p>
+      <p><strong>HST:</strong> <%= number_to_currency(order.hst) %></p>
+      <p><strong>Total Price (With Tax):</strong> <%= number_to_currency(order.total_with_tax) %></p>
+      <p><strong>Payment Status:</strong> <%= order.status == 'paid' ? 'Paid' : 'Not Paid' %></p>
+      <h3>Order Items</h3>
+      <ul>
+        <% order.order_items.each do |item| %>
+          <li><%= item.product.name %> - Quantity: <%= item.quantity %> - Price: <%= number_to_currency(item.price) %></li>
+        <% end %>
+      </ul>
+    </div>
+    <hr>
+  <% end %>
+<% else %>
+  <p>You have no orders.</p>
+<% end %>

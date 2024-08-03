@@ -1,47 +1,38 @@
-<h1>Your Cart</h1>
+<h1>Your Shopping Cart</h1>
 
-<% if @cart && @cart.cart_items.any? %>
+<% if @cart.any? %>
   <table>
     <thead>
       <tr>
         <th>Product</th>
-        <th>Price</th>
         <th>Quantity</th>
-        <th>Total</th>
-        <th>Actions</th>
+        <th>Price</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <% @cart.cart_items.each do |cart_item| %>
+      <% @cart.each do |product_id, quantity| %>
+        <% product = Product.find(product_id) %>
         <tr>
-          <td><%= cart_item.product.name %></td>
-          <td><%= number_to_currency(cart_item.product.price) %></td>
+          <td><%= product.name %></td>
           <td>
             <%= form_with url: update_quantity_cart_path, method: :patch, local: true do %>
-              <%= hidden_field_tag :id, cart_item.id %>
-              <%= number_field_tag :quantity, cart_item.quantity, min: 1, step: 1 %>
-              <%= submit_tag "Update", class: "btn btn-primary" %>
+              <%= hidden_field_tag :product_id, product.id %>
+              <%= number_field_tag :quantity, quantity, min: 1 %>
+              <%= submit_tag 'Update' %>
             <% end %>
           </td>
-          <td><%= number_to_currency(cart_item.quantity * cart_item.product.price) %></td>
+          <td><%= number_to_currency(product.price * quantity) %></td>
           <td>
-            <%= form_with url: remove_item_cart_path(cart_item.id), method: :delete, local: true do %>
-  <%= submit_tag "Remove", class: "btn btn-danger" %>
-<% end %>
+            <%= form_with url: remove_item_cart_path(product_id: product.id), method: :delete, local: true do %>
+              <%= submit_tag 'Remove' %>
+            <% end %>
           </td>
         </tr>
       <% end %>
     </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="3">Total</td>
-        <td><%= number_to_currency(@cart.cart_items.sum { |item| item.quantity * item.product.price }) %></td>
-        <td></td>
-      </tr>
-    </tfoot>
   </table>
+  <%= link_to 'Checkout', checkout_cart_path, class: 'btn btn-primary' %>
 <% else %>
   <p>Your cart is empty.</p>
 <% end %>
-
-<%= link_to 'Continue Shopping', products_path, class: 'btn btn-secondary' %>

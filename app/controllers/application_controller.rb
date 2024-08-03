@@ -1,18 +1,53 @@
-# app/controllers/application_controller.rb
 class ApplicationController < ActionController::Base
-  before_action :authenticate_admin_user!, if: :admin_namespace?
+  protect_from_forgery with: :exception
 
-  private
+  before_action :authenticate_user!
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
-  def admin_namespace?
-    request.fullpath.start_with?('/admin')
+  # Devise methods for normal users
+  def authenticate_user!
+    if admin_user_signed_in?
+      authenticate_admin_user!
+    else
+      super
+    end
   end
 
-  def after_sign_in_path_for(resource)
-    Rails.logger.info "AdminUser signed in: #{resource.email}"
-    super
+  def current_user
+    if admin_user_signed_in?
+      current_admin_user
+    else
+      super
+    end
   end
-  def after_sign_in_path_for(resource)
-    products_path # or any other path
+
+  def user_signed_in?
+    if admin_user_signed_in?
+      admin_user_signed_in?
+    else
+      super
+    end
+  end
+
+  # Methods for admin users
+  def authenticate_admin_user!
+    unless admin_user_signed_in?
+      redirect_to new_admin_user_session_path
+    end
+  end
+
+  def current_admin_user
+    @current_admin_user ||= warden.authenticate(scope: :admin_user)
+  end
+
+  def admin_user_signed_in?
+    current_admin_user.present?
+  end
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name])
   end
 end

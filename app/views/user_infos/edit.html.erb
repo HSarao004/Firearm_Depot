@@ -13,41 +13,26 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :street %><br>
+    <%= f.label :street %>
     <%= f.text_field :street %>
   </div>
 
   <div class="field">
-    <%= f.label :city %><br>
+    <%= f.label :city %>
     <%= f.text_field :city %>
   </div>
 
   <div class="field">
-    <%= f.label :province %><br>
-    <%= f.text_field :province %>
+    <%= f.label :province %>
+    <%= f.select :province, options_for_select(@provinces) %>
   </div>
 
   <div class="field">
-    <%= f.label :postal_code %><br>
+    <%= f.label :postal_code %>
     <%= f.text_field :postal_code %>
   </div>
 
-  <div class="field">
-    <%= f.label :card_number %><br>
-    <%= f.text_field :card_number %>
-  </div>
-
-  <div class="field">
-    <%= f.label :expiry %><br>
-    <%= f.text_field :expiry %>
-  </div>
-
-  <div class="field">
-    <%= f.label :cvv %><br>
-    <%= f.text_field :cvv %>
-  </div>
-
   <div class="actions">
-    <%= f.submit "Update User Info" %>
+    <%= f.submit 'Save' %>
   </div>
 <% end %>

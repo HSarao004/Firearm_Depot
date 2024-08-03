@@ -1,5 +1,14 @@
+# app/admin/static_pages.rb
+
 ActiveAdmin.register StaticPage do
-  permit_params :title, :content, :slug
+  # Ensure ActiveAdmin uses slug for URLs
+  controller do
+    def find_resource
+      StaticPage.find_by!(slug: params[:id])
+    end
+  end
+
+  permit_params :title, :slug, :content
 
   index do
     selectable_column
@@ -8,6 +17,11 @@ ActiveAdmin.register StaticPage do
     column :slug
     actions
   end
+
+  filter :title
+  filter :slug
+  filter :created_at
+  filter :updated_at
 
   form do |f|
     f.inputs do
@@ -22,9 +36,9 @@ ActiveAdmin.register StaticPage do
     attributes_table do
       row :title
       row :slug
-      row :content do |static_page|
-        static_page.content.html_safe
-      end
+      row :content
+      row :created_at
+      row :updated_at
     end
   end
 end

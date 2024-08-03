@@ -1,16 +1,21 @@
 class Product < ApplicationRecord
   belongs_to :category
-  has_many :carts, as: :cartable
+  has_many :carts_products
+  has_many :carts, through: :carts_products
+  has_many :order_items
+  has_many :orders, through: :order_items
 
-  scope :newly_added, -> { where('created_at >= ?', 3.days.ago) }
-  scope :recently_updated, -> { where('updated_at >= ?', 3.days.ago) }
-  # Define the associations that are searchable
-  def self.ransackable_associations(auth_object = nil)
-    ["category"]
+  validates :name, presence: true, length: { maximum: 255 }
+  validates :description, length: { maximum: 1000 }
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :quantity_available, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :category_id, presence: true, numericality: { only_integer: true }
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["category_id", "name", "description", "price", "quantity_available"]
   end
 
-  # Define the attributes that are searchable
-  def self.ransackable_attributes(auth_object = nil)
-    ["back_img", "category_id", "created_at", "description", "front_img", "id", "leftside_img", "name", "price", "quantity_available", "rightside_img", "updated_at"]
+  def self.ransackable_associations(auth_object = nil)
+    ["category", "carts"]
   end
 end

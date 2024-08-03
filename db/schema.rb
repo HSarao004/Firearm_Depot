@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_20_005115) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_02_201648) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,6 +74,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_20_005115) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
@@ -102,6 +107,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_20_005115) do
     t.index ["user_id"], name: "index_carts_on_user_id"
   end
 
+  create_table "carts_products", force: :cascade do |t|
+    t.bigint "cart_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_carts_products_on_cart_id"
+    t.index ["product_id"], name: "index_carts_products_on_product_id"
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -115,6 +130,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_20_005115) do
     t.decimal "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "price_at_purchase", precision: 10, scale: 2
+    t.decimal "gst_rate", precision: 5, scale: 2
+    t.decimal "pst_rate", precision: 5, scale: 2
+    t.decimal "hst_rate", precision: 5, scale: 2
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
   end
@@ -127,6 +146,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_20_005115) do
     t.bigint "tax_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "total_price", precision: 10, scale: 2
+    t.decimal "gst", precision: 10, scale: 2
+    t.decimal "pst", precision: 10, scale: 2
+    t.decimal "hst", precision: 10, scale: 2
+    t.decimal "total_with_tax", precision: 10, scale: 2
+    t.string "stripe_payment_id"
     t.index ["tax_id"], name: "index_orders_on_tax_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
@@ -207,6 +232,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_20_005115) do
     t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.boolean "admin"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -218,6 +244,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_20_005115) do
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "products"
   add_foreign_key "carts", "users"
+  add_foreign_key "carts_products", "carts"
+  add_foreign_key "carts_products", "products"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "taxes"
