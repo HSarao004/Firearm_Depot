@@ -8,6 +8,8 @@ ActiveAdmin.register StaticPage do
     end
   end
 
+  permit_params :title, :slug, :content
+
   index do
     selectable_column
     id_column

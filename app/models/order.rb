@@ -4,11 +4,12 @@ class Order < ApplicationRecord
   has_many :order_items, dependent: :destroy
   has_many :products, through: :order_items
 
-  validates :user, presence: true
-  validates :total_price, :gst, :pst, :hst, presence: true
+  validates :user_id, presence: true, numericality: { only_integer: true }
+  validates :tax_id, presence: true, numericality: { only_integer: true }
+  validates :total_price, :gst, :pst, :hst, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :status, presence: true, inclusion: { in: %w[new paid shipped] }
   validates :stripe_payment_id, presence: true, if: :paid?
 
-  # Ransack attributes for search functionality
   def self.ransackable_associations(auth_object = nil)
     ["user", "order_items", "products"]
   end

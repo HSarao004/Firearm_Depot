@@ -1,0 +1,28 @@
+
+<h2>Order Summary</h2>
+<ul>
+  <% @cart.each do |product_id, quantity| %>
+    <% product = Product.find(product_id) %>
+    <li><%= product.name %> - <%= quantity %> x <%= number_to_currency(product.price) %> = <%= number_to_currency(product.price * quantity) %></li>
+  <% end %>
+</ul>
+
+<h3>Subtotal: <%= number_to_currency(@cart.sum { |product_id, quantity| Product.find(product_id).price * quantity }) %></h3>
+
+<% if @user_info.province.present? || params.dig(:order, :user_info, :province).present? %>
+  <% total_price = @cart.sum { |product_id, quantity| Product.find(product_id).price * quantity } %>
+  <% province = @user_info.province.presence || params.dig(:order, :user_info, :province) %>
+  <% tax = Tax.find_by(region: province) %>
+  <% gst = total_price * (tax.gst_rate / 100) %>
+  <% pst = total_price * (tax.pst_rate / 100) %>
+  <% hst = total_price * (tax.hst_rate / 100) %>
+
+  <h3>Taxes:</h3>
+  <ul>
+    <li>GST (<%= tax.gst_rate %>%): <%= number_to_currency(gst) %></li>
+    <li>PST (<%= tax.pst_rate %>%): <%= number_to_currency(pst) %></li>
+    <li>HST (<%= tax.hst_rate %>%): <%= number_to_currency(hst) %></li>
+  </ul>
+
+  <h3>Total: <%= number_to_currency(total_price + gst + pst + hst) %></h3>
+<% end %>

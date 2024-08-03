@@ -13,3 +13,7 @@
  *= require_tree .
  *= require_self
  */
+ /*
+ *= require quill/quill.core
+ *= require quill/quill.snow
+*/

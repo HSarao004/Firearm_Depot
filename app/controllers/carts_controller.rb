@@ -59,9 +59,14 @@ class CartsController < ApplicationController
         )
       end
 
-      session[:cart] = {}
+      if process_stripe_payment(params[:stripeToken], order.total_with_tax)
+        order.update!(status: 'paid', stripe_payment_id: @stripe_payment_id)
+        session[:cart] = {}
+        redirect_to orders_path, notice: 'Order completed successfully!'
+      else
+        raise ActiveRecord::RecordInvalid.new(order)
+      end
     end
-    redirect_to orders_path, notice: 'Order completed successfully!'
   rescue ActiveRecord::RecordInvalid => e
     logger.debug "Order creation failed: #{e.message}"
     @provinces = Tax.pluck(:region)
@@ -101,5 +106,20 @@ class CartsController < ApplicationController
       total_with_tax: total_price + gst + pst + hst,
       tax_id: tax.id
     }
+  end
+
+  def process_stripe_payment(stripe_token, amount)
+    @stripe_payment_id = nil
+    charge = Stripe::Charge.create(
+      amount: (amount * 100).to_i,
+      currency: 'usd',
+      source: stripe_token,
+      description: 'Order payment'
+    )
+    @stripe_payment_id = charge.id
+    charge.paid
+  rescue Stripe::CardError => e
+    logger.error "Stripe payment failed: #{e.message}"
+    false
   end
 end

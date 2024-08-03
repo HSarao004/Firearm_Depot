@@ -32,6 +32,7 @@ ActiveAdmin.register User do
         column "Total Price (With Tax)", :total_with_tax do |order|
           number_to_currency(order.total_with_tax)
         end
+        column "Payment Status", :status
         column "Order Items" do |order|
           ul do
             order.order_items.each do |item|
