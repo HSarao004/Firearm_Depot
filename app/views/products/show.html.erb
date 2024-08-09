@@ -1,34 +1,20 @@
-<!-- app/views/products/show.html.erb -->
-<h1><%= @product.name %></h1>
+<h1 id="product-title"><%= @product.name %></h1>
 
 <div class="images">
-  <%= image_tag @product.front_img, size: "100x100" if @product.front_img.present? %>
-  <%= image_tag @product.leftside_img, size: "100x100" if @product.leftside_img.present? %>
-  <%= image_tag @product.rightside_img, size: "100x100" if @product.rightside_img.present? %>
-  <%= image_tag @product.back_img, size: "100x100" if @product.back_img.present? %>
+  <%= image_tag @product.front_img, alt: "#{@product.name} front view", size: "100x100" if @product.front_img.present? %>
+  <%= image_tag @product.leftside_img, alt: "#{@product.name} left side view", size: "100x100" if @product.leftside_img.present? %>
+  <%= image_tag @product.rightside_img, alt: "#{@product.name} right side view", size: "100x100" if @product.rightside_img.present? %>
+  <%= image_tag @product.back_img, alt: "#{@product.name} back view", size: "100x100" if @product.back_img.present? %>
 </div>
+
 <p><%= @product.description %></p>
 <p>Price: <%= number_to_currency(@product.price) %></p>
 <p>Quantity Available: <%= @product.quantity_available %></p>
 <p>Category: <%= @product.category.name %></p>
+
 <%= form_with url: add_to_cart_product_path(@product), method: :post, local: true do %>
   <%= hidden_field_tag :product_id, @product.id %>
   <%= submit_tag 'Add to Cart' %>
-  <% end %>
-
+<% end %>
 
 <%= link_to 'Back to Products', products_path %>
-
-
-<style>
-  .images {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-  .images img {
-    margin: 5px;
-  }
-  
-</style>

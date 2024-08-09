@@ -1,8 +1,8 @@
-<h1>Checkout</h1>
+<h1 id="checkout-title">Checkout</h1>
 
 <%= form_with model: Order.new, url: complete_order_cart_path, method: :post, local: true, id: "payment-form" do |f| %>
   <h2>Customer Information</h2>
-  
+
   <% if @user_info.persisted? %>
     <%= hidden_field_tag 'order[user_info][street]', @user_info.street %>
     <%= hidden_field_tag 'order[user_info][city]', @user_info.city %>

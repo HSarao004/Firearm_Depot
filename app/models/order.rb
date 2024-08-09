@@ -4,10 +4,11 @@ class Order < ApplicationRecord
   has_many :order_items, dependent: :destroy
   has_many :products, through: :order_items
 
-  validates :user_id, presence: true, numericality: { only_integer: true }
-  validates :tax_id, presence: true, numericality: { only_integer: true }
-  validates :total_price, :gst, :pst, :hst, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :status, presence: true, inclusion: { in: %w[new paid shipped] }
+  VALID_STATUSES = %w[new paid shipped completed cancelled].freeze
+
+  validates :user, presence: true
+  validates :total_price, :gst, :pst, :hst, :status, presence: true
+  validates :status, inclusion: { in: VALID_STATUSES }
   validates :stripe_payment_id, presence: true, if: :paid?
 
   def self.ransackable_associations(auth_object = nil)
@@ -15,7 +16,7 @@ class Order < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["status", "total_price", "gst", "pst", "hst", "total_with_tax", "created_at"]
+    ["status", "total_price", "gst", "pst", "hst", "total_with_tax", "created_at", "tax_id"]
   end
 
   def total_with_tax

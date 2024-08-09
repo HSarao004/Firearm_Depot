@@ -1,19 +1,160 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
- /*
- *= require quill/quill.core
- *= require quill/quill.snow
-*/
+body {
+    font-family: Arial, sans-serif;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 10px;
+}
+
+.categories-dropdown {
+    margin-bottom: 20px;
+}
+
+.filters {
+    margin-bottom: 20px;
+}
+
+.filters a {
+    margin-right: 10px;
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.product {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.product img {
+    max-width: 100%;
+    height: auto;
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.images {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.images img {
+    margin: 5px;
+}
+
+/* Orders Section */
+.order {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.order h3 {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+.order p, .order li {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.order ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.order li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 0;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .products {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .images {
+        flex-direction: column;
+    }
+
+    .images img {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .order {
+        padding: 10px;
+    }
+
+    .order p, .order li {
+        font-size: 0.9em;
+    }
+
+    .order h3 {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .order {
+        padding: 8px;
+    }
+
+    .order p, .order li {
+        font-size: 0.85em;
+    }
+
+    .order h3 {
+        font-size: 1em;
+    }
+}
+
+@media (min-width: 600px) {
+    .product {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (min-width: 1024px) {
+    .product {
+        width: calc(33.33% - 20px);
+    }
+}

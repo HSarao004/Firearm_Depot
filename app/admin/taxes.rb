@@ -34,4 +34,16 @@ ActiveAdmin.register Tax do
       row :hst_rate
     end
   end
+
+  controller do
+    def destroy
+      tax = Tax.find(params[:id])
+      if tax.orders.exists?
+        redirect_to admin_taxes_path, alert: "Cannot delete tax that is associated with existing orders."
+      else
+        tax.destroy
+        redirect_to admin_taxes_path, notice: "Tax successfully deleted."
+      end
+    end
+  end
 end

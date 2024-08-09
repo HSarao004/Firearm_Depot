@@ -1,4 +1,4 @@
-<h1>Available Products</h1>
+<h1 id="available-products-title">Available Products</h1>
 
 <div class="categories-dropdown">
   <label for="category-select">Select a Category:</label>
@@ -21,10 +21,10 @@
     <div class="product">
       <h2><%= link_to product.name, product_path(product) %></h2>
       <div class="images">
-        <%= image_tag product.front_img, size: "100x100" if product.front_img.present? %>
-        <%= image_tag product.leftside_img, size: "100x100" if product.leftside_img.present? %>
-        <%= image_tag product.rightside_img, size: "100x100" if product.rightside_img.present? %>
-        <%= image_tag product.back_img, size: "100x100" if product.back_img.present? %>
+        <%= image_tag product.front_img, size: "100x100", alt: "#{product.name} front view" if product.front_img.present? %>
+        <%= image_tag product.leftside_img, size: "100x100", alt: "#{product.name} left side view" if product.leftside_img.present? %>
+        <%= image_tag product.rightside_img, size: "100x100", alt: "#{product.name} right side view" if product.rightside_img.present? %>
+        <%= image_tag product.back_img, size: "100x100", alt: "#{product.name} back view" if product.back_img.present? %>
       </div>
       <p><%= product.description %></p>
       <p>Price: <%= number_to_currency(product.price) %></p>
@@ -35,38 +35,3 @@
 <div class="pagination">
   <%= paginate @products %>
 </div>
-
-<style>
-  .categories-dropdown {
-    margin-bottom: 20px;
-  }
-  .filters {
-    margin-bottom: 20px;
-  }
-  .filters a {
-    margin-right: 10px;
-  }
-  .products {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .product {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin: 10px;
-    width: 250px;
-    text-align: center;
-  }
-  .product img {
-    max-width: 100%;
-    height: auto;
-  }
-  .images {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
-  .pagination {
-    margin-top: 20px;
-  }
-</style>

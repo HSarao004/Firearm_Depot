@@ -45,7 +45,7 @@ class CartsController < ApplicationController
         @user_info = current_user.user_info
       end
 
-      order = current_user.orders.create!(order_params.merge(tax_id: Tax.find_by(region: @user_info.province).id))
+      order = current_user.orders.create!(order_params.merge(tax_id: Tax.find_by(region: @user_info.province).id, status: 'new'))
 
       session[:cart].each do |product_id, quantity|
         product = Product.find(product_id)

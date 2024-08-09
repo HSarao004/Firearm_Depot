@@ -13,3 +13,6 @@
     <li><%= item.product.name %> - Quantity: <%= item.quantity %> - Price: <%= number_to_currency(item.price_at_purchase) %></li>
   <% end %>
 </ul>
+<div class="pagination">
+  <%= paginate @products %>
+</div>
