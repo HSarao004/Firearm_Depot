@@ -24,7 +24,7 @@ class Order < ApplicationRecord
   end
 
   def paid?
-    status == 'paid'
+    status == "paid"
   end
 
   def stripe_payment_details

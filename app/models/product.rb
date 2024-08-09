@@ -8,7 +8,8 @@ class Product < ApplicationRecord
   validates :name, presence: true, length: { maximum: 255 }
   validates :description, length: { maximum: 1000 }
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :quantity_available, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :quantity_available, presence:     true,
+                                 numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :category_id, presence: true, numericality: { only_integer: true }
 
   def self.ransackable_attributes(auth_object = nil)

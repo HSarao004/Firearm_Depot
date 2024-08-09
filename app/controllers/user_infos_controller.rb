@@ -1,13 +1,12 @@
 class UserInfosController < ApplicationController
-  before_action :set_user_info, only: [:edit, :update]
-  before_action :set_provinces, only: [:edit, :update]
+  before_action :set_user_info, only: %i[edit update]
+  before_action :set_provinces, only: %i[edit update]
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @user_info.update(user_info_params)
-      redirect_to root_path, notice: 'User information updated successfully.'
+      redirect_to root_path, notice: "User information updated successfully."
     else
       render :edit
     end

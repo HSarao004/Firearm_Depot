@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: firearm_depot_production
+      POSTGRES_USER: firearm_depot
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      args:
+        SECRET_KEY_BASE: b1832f4fbc15be277ef89508954d9da8419daf867da5427935685eddf483f87256872718d64c5b0bdb94077ca4ea87620576b866106bc603a850342b051d92a0
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USER: firearm_depot
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: firearm_depot_production
+      DATABASE_PORT: 5432
+      RAILS_ENV: production
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

@@ -7,7 +7,8 @@ class Cart < ApplicationRecord
   validates :total_after_tax, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
   def self.ransackable_attributes(auth_object = nil)
-    ["cartable_id", "cartable_type", "created_at", "id", "id_value", "product_id", "quantity", "total_after_tax", "updated_at", "user_id"]
+    ["cartable_id", "cartable_type", "created_at", "id", "id_value", "product_id", "quantity",
+     "total_after_tax", "updated_at", "user_id"]
   end
 
   def self.ransackable_associations(auth_object = nil)

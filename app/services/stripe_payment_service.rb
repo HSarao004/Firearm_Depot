@@ -12,11 +12,11 @@ class StripePaymentService
 
   def create_charge
     Stripe::Charge.create({
-      amount: (@order.total_with_tax * 100).to_i, # Amount in cents
-      currency: 'usd',
-      source: @token,
-      description: "Order ##{@order.id}"
-    })
+                            amount:      (@order.total_with_tax * 100).to_i, # Amount in cents
+                            currency:    "usd",
+                            source:      @token,
+                            description: "Order ##{@order.id}"
+                          })
   rescue Stripe::CardError => e
     e.message
   end

@@ -17,18 +17,18 @@ class OrdersController < ApplicationController
       @order = current_user.orders.create!(order_params.merge(tax_id: Tax.find_by(region: @user_info.province).id))
 
       session[:cart].each do |product_id, quantity|
-        @order.order_items.create!(product_id: product_id, quantity: quantity)
+        @order.order_items.create!(product_id:, quantity:)
       end
 
       if params[:stripeToken].present?
         Rails.logger.info "Stripe token received: #{params[:stripeToken]}"
-        @order.update!(status: 'paid', stripe_payment_id: params[:stripeToken])
+        @order.update!(status: "paid", stripe_payment_id: params[:stripeToken])
         Rails.logger.info "Order status set to 'paid' for order ID: #{@order.id} with status #{@order.status}"
         session[:cart] = {}
-        redirect_to orders_path, notice: 'Order completed successfully!'
+        redirect_to orders_path, notice: "Order completed successfully!"
       else
         Rails.logger.info "Stripe token not received"
-        raise ActiveRecord::Rollback, 'Payment failed'
+        raise ActiveRecord::Rollback, "Payment failed"
       end
     end
   rescue ActiveRecord::RecordInvalid => e
@@ -43,7 +43,9 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    total_price = session[:cart].sum { |product_id, quantity| Product.find(product_id).price * quantity }
+    total_price = session[:cart].sum do |product_id, quantity|
+      Product.find(product_id).price * quantity
+    end
     province = user_info_params[:province] || current_user.user_info.province
     tax = Tax.find_by(region: province)
     gst = total_price * (tax.gst_rate / 100)
@@ -51,10 +53,10 @@ class OrdersController < ApplicationController
     hst = total_price * (tax.hst_rate / 100)
 
     {
-      total_price: total_price,
-      gst: gst,
-      pst: pst,
-      hst: hst,
+      total_price:,
+      gst:,
+      pst:,
+      hst:,
       total_with_tax: total_price + gst + pst + hst
     }
   end

@@ -22,18 +22,14 @@ class ApplicationController < ActionController::Base
   end
 
   def user_signed_in?
-    if admin_user_signed_in?
-      admin_user_signed_in?
-    else
-      super
-    end
+    admin_user_signed_in? || super
   end
 
   # Methods for admin users
   def authenticate_admin_user!
-    unless admin_user_signed_in?
-      redirect_to new_admin_user_session_path
-    end
+    return if admin_user_signed_in?
+
+    redirect_to new_admin_user_session_path
   end
 
   def current_admin_user

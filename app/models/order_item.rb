@@ -13,6 +13,6 @@ class OrderItem < ApplicationRecord
   end
 
   def total_price
-    self.price_at_purchase * self.quantity
+    price_at_purchase * quantity
   end
 end

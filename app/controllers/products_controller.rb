@@ -1,10 +1,10 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :add_to_cart]
+  before_action :set_product, only: %i[show edit update destroy add_to_cart]
 
   def index
-    @products = if params[:filter] == 'new'
+    @products = if params[:filter] == "new"
                   Product.newly_added.page(params[:page]).per(10)
-                elsif params[:filter] == 'recently_updated'
+                elsif params[:filter] == "recently_updated"
                   Product.recently_updated.page(params[:page]).per(10)
                 else
                   Product.page(params[:page]).per(10)
@@ -14,6 +14,7 @@ class ProductsController < ApplicationController
   def show
     @product = Product.find(params[:id])
   end
+
   def new
     @product = Product.new
   end
@@ -22,19 +23,18 @@ class ProductsController < ApplicationController
     @product = Product.new(product_params)
     save_images(@product)
     if @product.save
-      redirect_to @product, notice: 'Product was successfully created.'
+      redirect_to @product, notice: "Product was successfully created."
     else
       render :new
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     save_images(@product)
     if @product.update(product_params)
-      redirect_to @product, notice: 'Product was successfully updated.'
+      redirect_to @product, notice: "Product was successfully updated."
     else
       render :edit
     end
@@ -42,7 +42,7 @@ class ProductsController < ApplicationController
 
   def destroy
     @product.destroy
-    redirect_to products_url, notice: 'Product was successfully destroyed.'
+    redirect_to products_url, notice: "Product was successfully destroyed."
   end
 
   def add_to_cart
@@ -50,7 +50,7 @@ class ProductsController < ApplicationController
     cart = session[:cart] || {}
     cart[product.id.to_s] = (cart[product.id.to_s] || 0) + 1
     session[:cart] = cart
-    redirect_to cart_path, notice: 'Product added to cart.'
+    redirect_to cart_path, notice: "Product added to cart."
   end
 
   private
@@ -60,7 +60,8 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :price, :quantity_available, :leftside_img, :rightside_img, :front_img, :back_img, :category_id)
+    params.require(:product).permit(:name, :description, :price, :quantity_available,
+                                    :leftside_img, :rightside_img, :front_img, :back_img, :category_id)
   end
 
   def save_images(product)
@@ -73,15 +74,15 @@ class ProductsController < ApplicationController
     if params[:product][:front_img].present?
       product.front_img = save_image(params[:product][:front_img])
     end
-    if params[:product][:back_img].present?
-      product.back_img = save_image(params[:product][:back_img])
-    end
+    return if params[:product][:back_img].blank?
+
+    product.back_img = save_image(params[:product][:back_img])
   end
 
   def save_image(uploaded_file)
     filename = SecureRandom.hex + File.extname(uploaded_file.original_filename)
-    filepath = Rails.root.join('public', 'images', 'products', filename)
-    File.open(filepath, 'wb') do |file|
+    filepath = Rails.root.join("public", "images", "products", filename)
+    File.open(filepath, "wb") do |file|
       file.write(uploaded_file.read)
     end
     "/images/products/#{filename}"
